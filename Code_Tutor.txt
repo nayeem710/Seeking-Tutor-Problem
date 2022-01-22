@@ -1,0 +1,67 @@
+void *tutor_thread(void *tutor_id){
+       int t_id=*(int*)tutor_id;
+    
+    while(1){
+        //if all students finish, tutors threads terminate.
+        if(finished_student_no==student_no){
+        sem_wait(&mutex);
+        finished_tutor_no++; //to see how many tutors have been terminated
+        sem_post(&mutex);
+        
+        sem_wait(&mutex);
+            printf("------tutor %d terminate------\n",t_id);
+            if(finished_tutor_no == tutor_no)
+            {
+            printf("------coordinator terminate------\n");
+            
+            }
+            sem_post(&mutex);
+            
+            pthread_exit(NULL);
+        }
+        
+        int maxHelp=help-1; //as priority is depended on number of times a student gets help, and priority is an array starting from 0, so subtracting 1 is necessary 
+        int max_request=student_no*help+1; //this is the maximum serial a student can get
+        int s_id=-1; //it is something like a flag, if tutor finds any student in priority queue, it will contain that students id, otherwise it will be -1.     
+        //wait coordinator's notification
+        sem_wait(&coordinator);
+        
+		sem_wait(&mutex);
+        //find student with highest priority from priority queue;
+        for(int i=0;i<student_no;i++){
+            if(priorityQueue[i][0]>-1 && priorityQueue[i][0]<=maxHelp && priorityQueue[i][1]<max_request)
+			{
+                maxHelp = priorityQueue[i][0];//how many times a student has been taught
+                max_request=priorityQueue[i][1]; //who comes first 
+                s_id=student_ids[i];
+            }
+        }
+        
+        //in case no student in the queue.
+        if(s_id==-1) {
+			sem_post(&mutex);
+            continue;
+        }
+        
+        //pop the student(reset the priority queue)
+		for(int i = 0;i<2;i++)
+		{
+			priorityQueue[s_id-1][i]=-1;
+		}
+        
+        //occupied chair--
+        occupied_chairs--;
+		sem_post(&mutex);
+        
+        //after tutoring
+		sem_wait(&mutex);
+        printf("Tu: Student %d tutored by Tutor %d\n",s_id,t_id);
+		sem_post(&mutex);
+
+        //update shared data so student can know who tutored him.
+		sem_wait(&mutex);
+        tutorFinishedQueue[s_id-1]=t_id;
+		sem_post(&mutex);
+        
+    }
+}

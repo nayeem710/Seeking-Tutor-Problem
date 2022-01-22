@@ -1,0 +1,37 @@
+void *coordinator_thread(){
+    while(1){
+        //if all students finish, tutors threads and coordinate thread terminate.
+        if(finished_student_no==student_no){
+            //terminate tutors first
+            for(int i=0;i<tutor_no;i++){
+	        //notify tutors to terminate
+	        sem_post(&coordinator);
+            }
+            
+            //terminate coordinate itself
+            pthread_exit(NULL);
+            
+        }
+        
+        //wait student's notification
+        sem_wait(&student);
+        
+		sem_wait(&mutex);
+        //find the students who just seated and push them into the priority queue
+        int i;
+        for(i=0;i<student_no;i++){
+            if(visited[i]>-1)
+			{
+                priorityQueue[i][0]=priority[i];
+                priorityQueue[i][1]=visited[i]; //to save the time when the student came
+                
+                printf("Co: Student %d with priority %d in the queue. Waiting students now = %d\n",student_ids[i],priority[i],occupied_chairs);
+                visited[i]=-1;
+                
+                //notify tutor that student is in the queue.
+                sem_post(&coordinator);
+            }
+        }
+		sem_post(&mutex);
+    }
+}

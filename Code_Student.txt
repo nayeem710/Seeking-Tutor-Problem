@@ -1,0 +1,54 @@
+void *student_thread(void *student_id){ 
+    int s_id=*(int*)student_id; //converting void to int
+    
+    while(1){ 
+        if(priority[s_id-1] == help) { //max kotobar student ashte parbe
+            
+			sem_wait(&mutex);
+            finished_student_no++; ///how many students have tutored fully
+			sem_post(&mutex);
+   
+            printf("------student %d terminate------\n",s_id);
+			 //notify coordinate to terminate
+            sem_post(&student);
+            pthread_exit(NULL);
+        }
+        
+        
+        //seat e aise
+		sem_wait(&mutex);
+        if(occupied_chairs == total_chair)
+		{ //seat pay nai
+            printf("St: Student %d found no empty chair. Will try again later.\n",s_id);
+			sem_post(&mutex);
+            continue;
+        }
+        
+        occupied_chairs++; ///seat paise
+        request_no++; //request number of student
+        visited[s_id-1]=request_no;
+        
+        printf("St: Student %d takes a seat. Empty chairs = %d\n",s_id,total_chair-occupied_chairs);
+  
+		sem_post(&mutex);
+        
+        //notify coordinator that student seated.
+        sem_post(&student);
+        
+        //wait to be tutored.
+        while(tutorFinishedQueue[s_id-1]==-1);
+
+        printf("St: Student %d received help from Tutor %d.\n",s_id,tutorFinishedQueue[s_id-1]);
+        
+        //reset the shared data
+      
+		sem_wait(&mutex);
+        tutorFinishedQueue[s_id-1]=-1;
+		sem_post(&mutex);
+        
+        //tutored times++ after tutoring.
+		sem_wait(&mutex);
+        priority[s_id-1]++;
+		sem_post(&mutex);
+    }
+}
