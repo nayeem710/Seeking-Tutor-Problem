@@ -1,0 +1,7 @@
+We have a club where undergraduate students get help with their programming assignments from tutors.
+The club has a coordinator and several tutors to assist the students. Here, students can come to the
+waiting area, if there is no available seat then they will go back to programming. Otherwise, they will
+wait in the waiting area. The coordinator will then prioritize students in a queue. Then tutor will find
+the student from the queue who has the highest priority and tutor them. If more than one student has the
+same priority the tutor will choose who came first. After getting the maximum amount of help students terminate.
+When all students will be finished getting help, the tutor will terminate and then the coordinator will be terminated

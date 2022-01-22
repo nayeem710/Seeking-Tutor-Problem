@@ -1,0 +1,16 @@
+Hello, As-salamu-alaykum ma’am. I’m.........
+In our project, we initialized total 3 threads, students, tutors, and coordinator.
+I will describe the student thread.
+According to our project, the student will start working first. In this part the student
+will start programming first, then the student can come to the waiting area. When a student
+comes to the waiting area and if he doesn’t get any seat then he will go back to programming.
+But if it gets a seat, we will increment the occupied chairs by 1 and the request number of that
+student will be incremented too and the request number will be stored in a visited array in that 
+student’s corresponding position.
+If the student has taken their maximum limit of help, then the student increment finished student no variable to keep 
+the track of how many students have done, 
+and then the student will send a signal to the coordinate and wait to be tutored. After getting maximum 
+help from the tutor then the student thread can be terminated.
+
+Now the next coordinate thread will describe my teammate.....
+Thank you ma'am.

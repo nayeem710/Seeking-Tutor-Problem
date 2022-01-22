@@ -1,0 +1,8 @@
+Hello, As-salamu-alaykum ma’am. I’m ..........
+I will describe the coordinate thread.
+In the coordinator thread, it was waiting for the student threads signal.
+The coordinator waits for students to come to seek help. After getting the signal,
+if the student number has visited, then the coordinator prioritizes students according to their priority.
+If many students’ priority is the same, then the coordinator prioritizes them according to who has come first.
+Then coordinator sends a signal to the tutor and assigns them to the tutor.
+Now the next tutor thread will describe my teammate……… 

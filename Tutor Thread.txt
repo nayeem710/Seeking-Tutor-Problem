@@ -1,0 +1,14 @@
+Hello, As-salamu-alaykum ma’am. I’m .....
+I will describe the tutor thread.
+In the tutor thread, it was waiting for the coordinator signal.
+The tutor will find the student with the highest priority.
+If multiple students have the same priority, it will find the student 
+who came first. Here we are basically trying to find the minimum request
+number. Then the tutor will send that particular student signal to stop waiting.
+Back to the student, it will get the signal from the tutor and then the priority 
+will increment by one and goes back to programming. After the coordinator finds that
+all students have finished, it will notify the tutor to execute.
+When the tutor finds that all students are done, the tutor will terminate, and when all 
+the tutor terminates, the coordinator terminates finally.
+
+Now my teammate Md. Jannatul Haq will run the code and will show the output.
